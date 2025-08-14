@@ -1,0 +1,14 @@
+/* Sempre que alguém perguntar qual é o css global, me chama*/
+
+/*vamos dar reset primeiro */
+
+*{ 
+    margin: 0; 
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body, #root {
+    /* background-color: whitesmoke; --> Fundo tela toda*/
+    min-height: 100vh;
+}
