@@ -2,3 +2,7 @@
     background-color: rgb(231, 237, 255);
     min-height: calc(100vh - 70px) /*Altura da tela - a altura que eu fixei na navbar (70px)*/
 }
+
+.imagem-corpo{
+    width: 350px;
+}

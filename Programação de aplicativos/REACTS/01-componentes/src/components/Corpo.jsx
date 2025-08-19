@@ -8,11 +8,13 @@ function Corpo() {
   return (
     <div className="corpo-container">
       <Titulo1 />
-      <Titulo2 texto={"Primeiro pedaço de página"} emoji={"😘👌"}/>
-      <Texto />
+      <Titulo2 texto={"Primeiro pedaço de página"} emoji={"😘👌"} />
+      <Texto texto={"Testando rs"}/>
 
       <Titulo2 texto={"Segundo pedação de página"} />
-      <Textao />
+      <Textao texto={"lorem"}/>
+
+      <img src="./imagens/batman.jpeg" alt="Imagem 1 (Batman)" className='imagem-corpo' />
     </div>
   );
 }
