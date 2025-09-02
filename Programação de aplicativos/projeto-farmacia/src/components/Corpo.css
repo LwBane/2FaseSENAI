@@ -1,0 +1,37 @@
+.corpo-container{
+    background-color: var(--cor-5);
+    min-height: calc(100vh - 70px); /*Altura da tela - a altura que eu fixei na navbar (70px)*/
+    padding: 50px;
+}
+
+/* .titulo-container{
+    color: var(--cor-1);
+} */
+
+.imagem-corpo{ 
+    width: 80%; /* ou max-width: 600px para um tamanho fixo */
+    height: auto; 
+    max-height: 400px; 
+    margin: 20px auto; /* centraliza horizontalmente com espaçamento */
+    display: block;
+    object-fit: contain; /* mantém a imagem inteira visível sem cortar */
+}
+
+.container-novidades {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+}
+
+.imagem-novidades{
+    width: 100%;
+    max-width: 300px; /*limita o tamanho*/
+    height: auto; /* mantém a proporção */
+    margin: 10px; /* espaçamento entre as imagens */
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    object-fit: cover; /* ou contain, dependendo do efeito desejado */
+}
