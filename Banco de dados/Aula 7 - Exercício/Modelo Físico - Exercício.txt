@@ -1,0 +1,96 @@
+--  Atividade Banco de Dados -> Conta Bancária
+
+-- BANCO: banco_xpto
+
+CREATE DATABASE banco_xpto;
+
+USE banco_xpto;
+
+CREATE TABLE categoria_cliente (
+id_categoria_cliente INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+nom_categoria_cliente VARCHAR(100)
+);
+
+CREATE TABLE cliente (
+id_cliente INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+nom_cliente VARCHAR(100),
+num_cpf BIGINT(11),
+num_cnpj BIGINT(14),
+num_celular VARCHAR(20),
+rua VARCHAR(45),
+numero_residencia INT,
+bairro VARCHAR(45),
+num_cep VARCHAR(10),
+cidade VARCHAR(45),
+estado VARCHAR(45),
+categoria_cliente_id INT, 
+FOREIGN KEY (categoria_cliente_id)
+REFERENCES categoria_cliente (id_categoria_cliente)
+);
+
+CREATE TABLE tipo_conta (
+id_tipo_conta INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+des_tipo_conta VARCHAR(100)
+);
+
+CREATE TABLE agencia (
+id_agencia INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+nom_agencia VARCHAR(100)
+);
+
+CREATE TABLE conta (
+id_conta INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+val_saldo DECIMAL(10,2), 
+tipo_conta_id INT, 
+cliente_id INT, 
+agencia_id INT, 
+FOREIGN KEY (tipo_conta_id)
+REFERENCES tipo_conta (id_tipo_conta),
+FOREIGN KEY (cliente_id)
+REFERENCES cliente (id_cliente),
+FOREIGN KEY (agencia_id)
+REFERENCES agencia (id_agencia)
+);
+
+-- ALTERAÇÕES 
+
+-- 1 - Na tabela Cliente alterar o nome da coluna NUM_CELULAR para TELEFONE
+
+ALTER TABLE cliente
+RENAME COLUMN num_celular TO telefone;
+
+-- 2 - Na tabela Categoria_Cliente vamos incluir o campo “OBSERVACAO” (TEXT)
+
+ALTER TABLE categoria_cliente
+ADD COLUMN observacao TEXT;
+
+-- 3 - Na tabela Cliente vamos incluir o campo “RENDA” (DECIMAL)
+
+ALTER TABLE cliente
+ADD COLUMN renda DECIMAL(8,2);
+
+-- 4 - Alterar o tipo de dado da coluna DES_TIPO_CONTA para TEXT
+
+ALTER TABLE tipo_conta
+MODIFY COLUMN des_tipo_conta TEXT;
+
+-- 5 - Alterar na tabela Agencia o NOM_AGENCIA para VARCHAR (45)
+
+ALTER TABLE agencia
+MODIFY COLUMN nom_agencia VARCHAR(45);
+
+
+-- 6 - Remover a coluna ESTADO da tabela CLIENTE
+
+ALTER TABLE cliente 
+DROP COLUMN estado;
+
+-- 7 - Alterar o nome da tabela CATEGORIA_CLIENTE para CATEGORIA
+
+ALTER TABLE categoria_cliente
+RENAME TO categoria;                                                      -- Não tem problema se era chave estrangeira, teria problema se eu adicionasse uma chave estrangeira com esse nome depois,
+
+-- 8 – Na tabela Tipo_Conta vamos incluir o campo “OBSERVACAO” (TEXT)
+
+ALTER TABLE tipo_conta
+ADD COLUMN observacao TEXT;
