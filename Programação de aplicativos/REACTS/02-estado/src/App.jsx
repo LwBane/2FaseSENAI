@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "./App.css";
 import Venda523 from "./components/Venda523";
+import Conceito524 from "./components/Conceito524";
 
 function App() {
   // lembrete: Não usar variável (ex: let --) aqui
@@ -33,6 +34,7 @@ function App() {
       <button onClick={incrementar}>+</button>
 
       <Venda523 />
+      <Conceito524 />
     </>
   );
 }
