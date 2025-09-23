@@ -1,0 +1,120 @@
+-- 22/09
+
+CREATE DATABASE  estacionamento_xpto; 
+
+USE estacionamento_xpto;
+
+CREATE TABLE cliente (
+id_cliente INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+nome VARCHAR(70),
+dt_nascimento DATE
+);
+
+CREATE TABLE categoria (
+id_categoria INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+nome_categoria VARCHAR(70),
+descricao VARCHAR (100)
+);
+
+CREATE TABLE veiculo (
+id_veiculo INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+placa VARCHAR(10),
+cor_veiculo VARCHAR (20),
+cliente_id INT,
+categoria_id INT,
+FOREIGN KEY (cliente_id) REFERENCES cliente (id_cliente),
+FOREIGN KEY (categoria_id) REFERENCES categoria (id_categoria)
+);
+
+CREATE TABLE estacionamento (
+id_estacionamento INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+nome_estacionamento VARCHAR(70),
+capacidade INT,
+dt_entrada DATE,
+dt_saida DATE,
+hs_entrada TIME,
+hs_saida TIME,
+veiculo_id INT,
+FOREIGN KEY (veiculo_id) REFERENCES veiculo (id_veiculo)
+);
+
+-- Populando tabela 
+
+-- Inserindo 3 registros de clientes
+INSERT INTO cliente (nome, dt_nascimento) VALUES 
+('João', '1985-03-15'),
+('Maria', '1992-07-22'),
+('Carlos', '1978-11-08');
+
+-- Inserindo 3 registros de categorias
+INSERT INTO categoria 
+(nome_categoria, descricao) 
+VALUES 
+('Utilitário', 'Veículos utilitários para transporte de cargas leves'),
+('Van', 'Veículos tipo van para transporte de passageiros ou cargas'),
+('Pick-up', 'Veículos tipo pick-up com caçamba para cargas');
+
+-- Inserindo 5 registros de veículos 
+
+INSERT INTO veiculo 
+(placa, cor_veiculo, cliente_id, categoria_id) 
+VALUES 
+('AAA-2020', 'Preto', 1, 2),
+('BBB-1234', 'Branco', 1, 1),
+('CCC-3050', 'Azul', 2, 1),
+('DDD-1234', 'Branco', 3, 2);
+
+-- Adicionando só o quinto veículo 
+
+INSERT INTO veiculo 
+(placa, cor_veiculo)
+VALUES 
+('RRR-2525', 'Azul');
+
+-- Inserindo 3 registros de estacionamento 
+
+INSERT INTO estacionamento 
+(nome_estacionamento, capacidade, dt_entrada, dt_saida, hs_entrada, hs_saida, veiculo_id) 
+VALUES 
+('Estacionamento Shopping Center', 200, '2024-09-22', '2024-09-22', '08:30:00', '17:45:00', 1),
+('Estacionamento Aeroporto', 500, '2024-09-22', '2024-09-23', '14:20:00', '09:15:00', 2),
+('Estacionamento Hospital Central', 150, '2024-09-22', '2024-09-22', '10:00:00', '18:30:00', 3);
+
+-- Parte 2:
+
+-- Realize um INNER JOIN entre as tabelas veiculo, categoria e cliente
+SELECT veiculo.id_veiculo, veiculo.placa, veiculo.cor_veiculo, cliente.nome, categoria.nome_categoria, categoria.descricao FROM veiculo
+JOIN cliente ON veiculo.cliente_id = cliente.id_cliente
+JOIN categoria ON veiculo.categoria_id = categoria.id_categoria;
+
+-- Realize um LEFT JOIN entre as tabelas veiculo e cliente
+SELECT veiculo.id_veiculo, veiculo.placa, veiculo.cor_veiculo, cliente.nome, cliente.dt_nascimento FROM veiculo LEFT JOIN cliente 
+ON veiculo.cliente_id = cliente.id_cliente;
+
+-- Realize um RIGHT JOIN entre as tabelas veiculo e categoria  
+SELECT veiculo.id_veiculo, veiculo.placa, veiculo.cor_veiculo, categoria.nome_categoria, categoria.descricao FROM veiculo RIGHT JOIN categoria 
+ON veiculo.categoria_id = categoria.id_categoria;
+
+-- Realize um FULL JOIN entre as tabelas veiculo e cliente
+SELECT veiculo.id_veiculo, veiculo.placa, veiculo.cor_veiculo, cliente.nome, cliente.dt_nascimento FROM veiculo LEFT JOIN cliente 
+ON veiculo.cliente_id = cliente.id_cliente
+UNION
+SELECT veiculo.id_veiculo, veiculo.placa, veiculo.cor_veiculo, cliente.nome, cliente.dt_nascimento FROM veiculo RIGHT JOIN cliente 
+ON veiculo.cliente_id = cliente.id_cliente;
+
+-- Realize um INNER JOIN entre as tabelas veiculo e cliente, é para aparecer nas colunas da consultas as seguintes descrições: (id_veiculo, placa_registrada, cor, nome_do_cliente)
+SELECT veiculo.id_veiculo, veiculo.placa AS placa_registrada, veiculo.cor_veiculo AS cor, cliente.nome AS nome_do_cliente
+FROM veiculo JOIN cliente 
+ON veiculo.cliente_id = cliente.id_cliente;
+
+-- Crie uma VIEW para a consulta realizada no passo anterior com o nome de: vw_veiculo_cliente
+CREATE VIEW vw_veiculo_cliente AS
+SELECT veiculo.id_veiculo, veiculo.placa AS placa_registrada, veiculo.cor_veiculo AS cor, cliente.nome AS nome_do_cliente FROM veiculo
+JOIN cliente 
+ON veiculo.cliente_id = cliente.id_cliente;
+
+-- Para consultar a VIEW criada:
+SELECT * FROM vw_veiculo_cliente;
+
+
+

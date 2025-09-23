@@ -28,7 +28,8 @@ function App() {
     <div>
       <h1>Arrays</h1>
       <div className="formCadastro">
-        {/* // preencher com input pra tirar aqueles prompt */}
+          <input type="text" />
+          <input type="text" />
       </div>
       <button onClick={cadastrar}>Cadastrar</button>
       <div className="container-cards">

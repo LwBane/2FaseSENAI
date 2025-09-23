@@ -1,0 +1,165 @@
+CREATE DATABASE banco_livraria2;
+
+USE banco_livraria2;
+
+CREATE TABLE editora (
+id_editora INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+nomefantasia_editora VARCHAR(45) NOT NULL,
+razaosocial_editora VARCHAR(100) NOT NULL,
+pais_editora VARCHAR(50) DEFAULT 'Brasil',
+cidade_editora VARCHAR(45),
+bairro_editora VARCHAR(45),
+rua_editora VARCHAR(45),
+telefone_editora VARCHAR(20)
+);
+
+CREATE TABLE autor(
+    id_autor INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    nome_autor VARCHAR(45) NOT NULL,
+    rg_autor VARCHAR(15)
+);
+
+CREATE TABLE financiador (
+    id_financiador INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    nome_financiador VARCHAR(45),
+    cnpj_financiador VARCHAR(14)
+);
+
+CREATE TABLE cliente (
+    id_cliente INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    nome_cliente VARCHAR(45) NOT NULL,
+    rg_cliente VARCHAR(15),
+    cpf_cliente VARCHAR(11) UNIQUE,
+    pais_cliente VARCHAR(50) DEFAULT 'Brasil',
+    cidade_cliente VARCHAR(45),
+    bairro_cliente VARCHAR(45),
+    rua_cliente VARCHAR(45)
+);
+
+CREATE TABLE livro (
+    id_livro INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    isbn_livro BIGINT(20),
+    titulo_livro VARCHAR(70),
+    preco_livro DECIMAL(8,2),
+    categoria_livro ENUM ('Horror','Ficção','Romance','Ação'),
+    editora_id INT,
+    autor_id INT,
+    financiador_id INT,
+    FOREIGN KEY (editora_id) REFERENCES editora (id_editora),
+    FOREIGN KEY (autor_id) REFERENCES autor (id_autor),
+    FOREIGN KEY (financiador_id) REFERENCES financiador (id_financiador)
+    );
+    
+    CREATE TABLE pedido (
+    id_pedido INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    qtd_pedido INT,
+    CHECK (qtd_pedido >=0),
+    cliente_id INT,
+    livro_id INT,
+    FOREIGN KEY (cliente_id) REFERENCES cliente (id_cliente),
+    FOREIGN KEY (livro_id) REFERENCES livro (id_livro)
+);
+
+-- Teste para verificar constraints 
+
+-- NOT NULL editora (nomefantasia e razaosocial)
+
+INSERT INTO editora 
+(nomefantasia_editora, razaosocial_editora, cidade_editora, telefone_editora)
+VALUES
+('Companhia das Letras', 'Editora Schwarcz S.A', 'São Paulo', 'Vila Madalena', '48999999991');
+
+SELECT * FROM editora;
+
+-- NOT NULL autor 
+
+INSERT INTO autor 
+(rg_autor)
+VALUES
+('12.345.678-9');
+
+-- NOT NULL nome cliente
+
+INSERT INTO cliente 
+(nome_cliente, rg_cliente, cpf_cliente, cidade_cliente)
+VALUES
+('Ana', '12.345.678-9', '12345678901', 'São Paulo'),
+('Maria', '12.345.678-8', '1342678931', 'Rio de Janeiro');
+
+SELECT * FROM cliente;
+
+-- Teste para verificar constraint CHECK
+
+INSERT INTO pedido 			
+(qtd_pedido, cliente_id)
+VALUES
+(-2, 1);
+
+-- Teste para verificar constraint ENUM
+
+INSERT INTO livro 
+(titulo_livro, preco_livro, categoria_livro)
+VALUES
+('Dom Casmurro', 29.90, 'Literatura Brasileira');
+
+-- Parte 2 
+
+-- O preço do livro não pode ser menor do que zero
+
+ALTER TABLE livro
+ADD CONSTRAINT CHECK (preco_livro >= 0); 
+
+-- Se a coluna n existisse: 
+-- ALTER TABLE livro
+-- ADD COLUMN preco_livro DECIMAL(8,2) CHECK (preco_livro >= 0);
+ 
+-- Nome fantasia da editora vai ser ENUM (Editora A, Editora B, Editora C) 
+
+ALTER TABLE editora
+DROP COLUMN nomefantasia_editora;
+
+ALTER TABLE editora
+ADD COLUMN nomefantasia_editora ENUM ('Editora A', 'Editora B', 'Editora C'); -- no txt
+
+
+-- Na tabela Financiador o nome do Financiador Default será Financiador Público 
+
+ALTER TABLE financiador
+DROP COLUMN nome_financiador;
+
+ALTER TABLE financiador
+ADD COLUMN nome_financiador VARCHAR(75) DEFAULT 'Financiador Público';
+
+-- Deve ser incluído no mínimo 3 registros para cada tabela 
+
+-- LIVRO 
+
+INSERT INTO livro 
+(titulo_livro, preco_livro, categoria_livro)
+VALUES
+('Dom Casmurro', 40, 'Ação'),
+('A Hora da Estrela', 24.50, 'Ação'),
+('O Alquimista', 32.00, 'Ficção');
+
+-- EDITORA 
+
+INSERT INTO editora 
+(nomefantasia_editora, razaosocial_editora, cidade_editora, telefone_editora)
+VALUES
+('Editora A', 'Distribuidora Record de Serviços de Imprensa S.A.', 'Rio de Janeiro', '48999999998'),
+('Editora B','SARAIVA EDUCACAO S.A.', 'São Paulo', '48999999997'),
+('Editora C', ' Editora Rocco Ltda', 'Rio de Janeiro', '48999999986');
+
+-- FINANCIADOR
+
+INSERT INTO financiador 
+(nome_financiador, cnpj_financiador)
+VALUES
+-- O que eu tinha criado pra ver o default do nome financiador: ('00000000000191')
+('Caixa Econômica', '00360305000104'),
+('BNDES', '33657248000189');
+
+SELECT * FROM livro;
+SELECT * FROM editora;
+SELECT * FROM financiador
+

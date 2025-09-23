@@ -1,0 +1,144 @@
+-- Exercício 10/09
+
+CREATE DATABASE banco_livros;
+
+USE banco_livros;
+
+CREATE TABLE editora (
+id_editora INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+nomefantasia_editora VARCHAR(45),
+razaosocial_editora VARCHAR(100),
+cidade_editora VARCHAR(45),
+bairro_editora VARCHAR(45),
+rua_editora VARCHAR(45),
+telefone_editora VARCHAR(20)
+);
+
+CREATE TABLE autor(
+    id_autor INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    nome_autor VARCHAR(45),
+    rg_autor VARCHAR(15)
+);
+
+CREATE TABLE financiador (
+    id_financiador INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    nome_financiador VARCHAR(45),
+    cnpj_financiador VARCHAR(14)
+);
+
+CREATE TABLE cliente (
+    id_cliente INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    nome_cliente VARCHAR(45),
+    rg_cliente VARCHAR(15),
+    cpf_cliente VARCHAR(11),
+    cidade_cliente VARCHAR(45),
+    bairro_cliente VARCHAR(45),
+    rua_cliente VARCHAR(45)
+);
+
+CREATE TABLE livro (
+    id_livro INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    isbn_livro BIGINT(20),
+    titulo_livro VARCHAR(70),
+    preco_livro DECIMAL(8,2),
+    categoria_livro VARCHAR(70),
+    editora_id INT,
+    autor_id INT,
+    financiador_id INT,
+    FOREIGN KEY (editora_id) REFERENCES editora (id_editora),
+    FOREIGN KEY (autor_id) REFERENCES autor (id_autor),
+    FOREIGN KEY (financiador_id) REFERENCES financiador (id_financiador)
+    );
+    
+    CREATE TABLE pedido (
+    id_pedido INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    qtd_pedido INT,
+    cliente_id INT,
+    livro_id INT,
+    FOREIGN KEY (cliente_id) REFERENCES cliente (id_cliente),
+    FOREIGN KEY (livro_id) REFERENCES livro (id_livro)
+);
+
+
+-- Inserir pelo menos 5 registros por tabela 
+
+-- EDITORA
+INSERT INTO editora 
+(nomefantasia_editora, cidade_editora, bairro_editora)
+VALUES
+('Companhia das Letras','São Paulo', 'Vila Madalena'),
+('Grupo Editorial Record', 'Rio de Janeiro', 'Centro'),
+('Saraiva Educação','São Paulo', 'Barra Funda'),
+('Editora Rocco', 'Rio de Janeiro', 'São Cristóvão'),
+('Intrínseca', 'Rio de Janeiro', 'Botafogo');
+
+-- AUTOR
+INSERT INTO autor 
+(nome_autor, rg_autor)
+VALUES
+('Machado de Assis', '12.345.678-9'),
+('Clarice Lispector', '98.765.432-1'),
+('Paulo Coelho', '11.223.344-5'),
+('Jorge Amado', '55.667.788-9'),
+('Lygia Fagundes Telles', '33.445.566-7');
+
+-- FINANCIADOR
+INSERT INTO financiador 
+(nome_financiador, cnpj_financiador)
+VALUES
+('Banco do Brasil', '00000000000191'),
+('Caixa Econômica', '00360305000104'),
+('BNDES', '33657248000189'),
+('Itaú Cultural', '60872504000123'),
+('Fundação Biblioteca Nacional', '42599572000143');
+
+-- CLIENTE
+INSERT INTO cliente 
+(nome_cliente, rg_cliente, cpf_cliente, cidade_cliente)
+VALUES
+('Ana', '12.345.678-9', '12345678901', 'São Paulo'),
+('Carlos', '23.456.789-0', '23456789012', 'Rio de Janeiro'),
+('Maria', '34.567.890-1', '34567890123', 'Belo Horizonte'),
+('João', '45.678.901-2', '45678901234', 'Porto Alegre'),
+('Lucia', '56.789.012-3', '56789012345', 'Salvador');
+
+-- LIVRO							-- Cada editora, financiador e autor devem ter pelo menos 1 livro associado a eles
+INSERT INTO livro 
+(titulo_livro, preco_livro, categoria_livro, editora_id, autor_id, financiador_id)
+VALUES
+('Dom Casmurro', 29.90, 'Literatura Brasileira', 1, 1, 1),
+('A Hora da Estrela', 24.50, 'Literatura Brasileira', 2, 2, 2),
+('O Alquimista', 32.00, 'Ficção', 3, 3, 3),
+('Gabriela, Cravo e Canela', 35.90, 'Literatura Brasileira', 4, 4, 4),
+('Ciranda de Pedra', 27.80, 'Literatura Brasileira', 5, 5, 5);
+
+-- PEDIDO
+INSERT INTO pedido 				-- Cada cliente ou livro devem ter pelo menos 1 pedido associado a eles
+(qtd_pedido, cliente_id, livro_id)
+VALUES
+(2, 1, 1),
+(1, 2, 2),
+(3, 3, 3),
+(1, 4, 4),
+(2, 5, 5);
+
+-- Consulta nas 5 tabelas 
+
+SELECT * FROM editora;
+SELECT * FROM autor; 
+SELECT * FROM financiador; 
+SELECT * FROM cliente; 
+SELECT * FROM livro;
+SELECT * FROM pedido;
+
+-- Tentativa de exclusão de editora, financiador e autor 
+
+DROP TABLE editora;
+DROP TABLE autor;
+DROP TABLE financiador;
+
+-- Tentativa de exclusão de cliente ou livro 
+
+DROP TABLE cliente;
+DROP TABLE livro;
+
