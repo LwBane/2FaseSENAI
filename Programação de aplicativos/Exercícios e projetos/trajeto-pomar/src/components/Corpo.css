@@ -1,0 +1,6 @@
+.corpo-container{
+    background-color: white;
+    min-height: calc(100vh - 70px); /*Altura da tela - a altura que eu fixei na navbar (70px)*/
+    padding: 50px;
+}
+
