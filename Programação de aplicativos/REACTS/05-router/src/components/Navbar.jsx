@@ -8,6 +8,7 @@ function Navbar() {
       <Link to="/pagina1">Página 1</Link>
       <Link to="/pagina2">Página 2</Link>
       <Link to="/pagina3">Página 3</Link>
+      <Link to="/produtos">Produtos</Link>
     </nav>
   )
 }

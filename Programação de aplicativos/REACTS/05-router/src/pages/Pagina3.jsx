@@ -1,9 +1,14 @@
 import React from 'react'
+import Navbar from "../components/Navbar";
+
 
 function Pagina3() {
   return (
-    <div>Pagina3</div>
-  )
+    <div>
+      <Navbar />
+      Pagina3
+    </div>
+  );
 }
 
 export default Pagina3
