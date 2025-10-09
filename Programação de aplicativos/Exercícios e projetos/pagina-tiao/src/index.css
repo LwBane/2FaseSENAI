@@ -1,0 +1,12 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  background-color: #dce6d7; /*--> Fundo tela toda*/
+  min-height: 100vh;
+}
