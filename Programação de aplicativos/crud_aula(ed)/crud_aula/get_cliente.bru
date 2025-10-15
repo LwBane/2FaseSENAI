@@ -1,0 +1,20 @@
+meta {
+  name: get_cliente
+  type: http
+  seq: 1
+}
+
+get {
+  url: http://127.0.0.1:300/clientes
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "nome": "Emilie",
+    "email": "teste@teste.com",
+    "endereco": "rua de teste 992 floripa sc",
+    "telefone": "48991975592"
+  }
+}
