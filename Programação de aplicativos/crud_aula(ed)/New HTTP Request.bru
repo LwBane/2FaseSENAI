@@ -1,0 +1,20 @@
+meta {
+  name: New HTTP Request
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://127.0.0.1:3000/clientes/
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "nome": "Fulano",
+    "email": "testeFulano@teste.com",
+    "endereco": "rua de fulano 993 floripa sc",
+    "telefone": "48999999999"
+  }
+}

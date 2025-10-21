@@ -23,68 +23,11 @@ initDB().catch((err) => {
 
 app.use(express.json());
 
-// Logger completo: loga request e resposta com corpo e tempo de execuÃ§Ã£o
-app.use((req, res, next) => {
-    const start = process.hrtime.bigint();
-    const timestamp = new Date().toISOString();
-    const { method, url, query } = req;
-    const reqBody = req.body;
-
-    // Intercepta res.json e res.send para capturar o corpo da resposta
-    const originalJson = res.json.bind(res);
-    const originalSend = res.send.bind(res);
-    let responseBody;
-
-    res.json = (body) => {
-        responseBody = body;
-        return originalJson(body);
-    };
-    res.send = (body) => {
-        try {
-            responseBody = body;
-        } catch {
-            responseBody = "[unserializable]";
-        }
-        return originalSend(body);
-    };
-
-    res.on("finish", () => {
-        const durationMs = Number(process.hrtime.bigint() - start) / 1e6;
-        const status = res.statusCode;
-
-        // Evita logs gigantes e falhas de stringify
-        const trunc = (val) => {
-            try {
-                const str = typeof val === "string" ? val : JSON.stringify(val);
-                if (!str) return str;
-                return str.length > 1000 ? str.slice(0, 1000) + "... [truncated]" : str;
-            } catch {
-                return "[unserializable]";
-            }
-        };
-
-        console.log(
-            `[${timestamp}] ${method} ${url} ${status} ${durationMs.toFixed(1)}ms`
-        );
-        if (reqBody && Object.keys(reqBody).length) {
-            console.log("  req.body:", trunc(reqBody));
-        }
-        if (query && Object.keys(query).length) {
-            console.log("  req.query:", trunc(query));
-        }
-        if (responseBody !== undefined) {
-            console.log("  res.body:", trunc(responseBody));
-        }
-    });
-
-    next();
-});
-
 app.post("/clientes", async (req, res) => {
     const { nome, endereco, email, telefone } = req.body;
     try {
         const [result] = await connection.query(
-            "INSERT INTO clientes (nome, endereco, email, telefone) VALUES (?, ?, ?, ?)",
+            "INSERT INTO cliente (nome, endereco, email, telefone) VALUES (?, ?, ?, ?)",
             [nome, endereco, email, telefone]
         );
         // O que a query realmente retorna:
@@ -117,7 +60,7 @@ app.post("/clientes", async (req, res) => {
 
 app.get("/clientes", async (req, res) => {
     try {
-        const [clientes] = await connection.query("SELECT * FROM clientes");
+        const [clientes] = await connection.query("SELECT * FROM cliente");
         res.json(clientes);
     } catch (error) {
         console.error(error.message);
@@ -129,7 +72,7 @@ app.get("/clientes/:id", async (req, res) => {
     const { id } = req.params;
     try {
         const [cliente] = await connection.query(
-            "SELECT * FROM clientes WHERE id = ?",
+            "SELECT * FROM cliente WHERE id = ?",
             [id]
         );
         if (cliente.length === 0) {
