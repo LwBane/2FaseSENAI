@@ -28,6 +28,8 @@ app.get('/clientes', async (req, res) => {
 
 app.get('/clientes/:id', async (req, res) => {
     const { id } = req.params;
+    console.log(req.params);
+    
     try {
         const [rows] = await pool.query('SELECT * FROM clientes WHERE id = ?', [id]);
         if (rows.length === 0) {
