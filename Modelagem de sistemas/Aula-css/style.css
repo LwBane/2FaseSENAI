@@ -1,0 +1,48 @@
+html {
+    height: 100%;
+}
+
+body {
+    height: 100%;
+    margin: 0;
+}
+
+#container{
+    height: 100%;
+    background-color: gray;
+}
+
+#top{
+    height: 20%;
+    background-color: rgb(32, 94, 119);
+}
+
+#mid{
+    height: 65%;
+    background-color: rgb(37, 101, 131);
+    display: flex;
+}
+
+#mid-left{
+    height: 100%;
+    width: 40%;
+    background-color: rgb(137, 170, 198);
+}
+
+#mid-right{
+    height: 100%;
+    width: 60%;
+    background-color: rgb(189, 218, 243);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.txt{
+    margin: 10px;
+}
+
+#bottom{
+    height: 15%;
+    background-color: rgb(31, 98, 99);
+}
